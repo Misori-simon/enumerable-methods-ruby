@@ -58,19 +58,34 @@ module Enumerable
     result
   end
 
-  def my_none? 
+  def my_none?
 
     unless block_given?
       return true unless self.any? {|element| element == true}
-      return false 
+      return false
     end
 
     for element in self
-      return false if yield element 
+      return false if yield element
     end
     return true
 
   end
 
+  def my_count(arg = nil)
+    return self.length if !(block_given?) && arg == nil
+    counter = 0
+    for element in self
+      if arg
+        if arg == element
+          counter +=1
+        end
+      elsif yield element
+        counter +=1
+      end
+    end
+    return counter
+  end
 
 end
+
