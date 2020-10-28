@@ -58,5 +58,19 @@ module Enumerable
     result
   end
 
+  def my_none? 
+
+    unless block_given?
+      return true unless self.any? {|element| element == true}
+      return false 
+    end
+
+    for element in self
+      return false if yield element 
+    end
+    return true
+
+  end
+
 
 end
