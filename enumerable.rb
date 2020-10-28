@@ -25,15 +25,30 @@ module Enumerable
     return to_enum(:my_select) unless block_given?
 
     array = self
-    final_array = []
+    final_object = []   if self.class == Array
+    final_object = {}   if self.class == Hash
     for element in array
-      final_array << element if yield element
+      if final_object.class == Array
+       final_object << element if yield element
+      else
+        final_object[element[0]] = element[1] if yield element
+      end
+
     end
-    final_array
+    final_object
   end
+
+  def my_all?
+  
+    result = true
+    for element in self
+      result = false unless yield element
+    end
+    return result
+  end
+
+  
 end
 
-arr = {"messi" => 54, "ronaldo" => 55, "zidane" => 53, "fowler" => 78 }
-p arr
-p arr.select { |num, y|  num == "messi"  }
-p arr.my_select { |num, y|  num == "messi"  }
+
+
