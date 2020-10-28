@@ -39,16 +39,24 @@ module Enumerable
   end
 
   def my_all?
-  
-    result = true
+
+    return result = true unless block_given?
     for element in self
       result = false unless yield element
     end
     return result
   end
 
-  
+  def my_any?
+    return result = true unless block_given?
+
+    result = false
+
+    for element in self
+      result = true if  yield element
+    end
+    result
+  end
+
+
 end
-
-
-
