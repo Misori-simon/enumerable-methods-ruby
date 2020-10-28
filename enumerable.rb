@@ -87,5 +87,16 @@ module Enumerable
     return counter
   end
 
+  def my_map
+    return to_enum(:map) unless block_given?
+  
+    final_object = []
+    for element in self
+      final_object << (yield element)
+    end
+    final_object
+  end
+
 end
+
 
