@@ -97,33 +97,47 @@ module Enumerable
     final_object
   end
 
-  def my_inject(initial = nil , symbol = nil)
-    raise "LocalJumpError no block given?" unless block_given? || initial
-    if initial.is_a?(Symbol)
-      acc = self[0]
-      flag = true
-    else
-      acc = initial
-      flag = false
-    end
-    if initial
-      for element in self
-        if element == self[0] && flag
-          flag = false
-          next
-        end
-        acc = acc.send(initial, element)
-      end
-      return acc
-    end
-    for element in self
-      acc = yield acc, element
-    end
-    return acc
+  
+def my_inject(accumulator = nil, symbol = nil, &block)
+
+  if accumulator.nil? && symbol.nil? && block.nil?
+    raise LocalJumpError, "no block given?"
   end
 
+  if symbol && block
+    raise LocalJumpError, "provide either a symbol or a block"
+  end
+
+  if symbol.nil? && block.nil?
+    symbol = accumulator
+    accumulator = nil
+  end
+
+  array = self.to_a
+
+  code_to_run = case symbol
+    when Symbol
+      lambda { |accumulator, element| accumulator.send(symbol, element) }
+    when nil
+      block
+  end
+  
+  if accumulator.nil?
+    ignore_first_element = true
+    accumulator = array[0]
+  end
+
+  switch = 0
+
+  each do |element|
+    unless ignore_first_element && switch == 0
+      accumulator = code_to_run.call(accumulator, element)
+    end
+    switch += 1
+  end
+  accumulator
+end  
+  
 end
-arr = [2,2,4,5,6]
-p arr.inject(1) {|sum, n| sum + n}
-p arr.my_inject(1) {|sum, n| sum + n}
+
 
