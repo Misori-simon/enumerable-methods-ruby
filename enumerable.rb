@@ -38,19 +38,52 @@ module Enumerable
     final_object
   end
 
-  def my_all?
+  def my_all?(pattern = nil)
 
-    return result = true unless block_given?
-    for element in self
-      result = false unless yield element
+    unless block_given? || pattern
+     return (self.my_any? {|x| x == false}) ? false : true
     end
+
+    result =  true
+
+    if pattern
+     if pattern.is_a?(Regexp)
+      self.my_each {|element| result = false unless element.match(pattern)}
+      return result
+     else
+      self.my_each {|element| result = false unless pattern === element}
+      return result
+     end
+    end
+
+    self.my_each {|element| result = false unless yield element }
     return result
   end
 
-  def my_any?
-    return result = true unless block_given?
+  def my_any?(pattern = nil)
+
+    unless block_given? || pattern
+      self.my_each do |element|
+        return element ? true : false
+      end
+    end
 
     result = false
+
+    if pattern
+     if pattern.is_a?(Regexp)
+      self.my_each  do |element| 
+        return true if element.match(pattern) 
+      end
+      return false
+
+     else
+      self.my_each do |element| 
+        return true if pattern === element
+      end
+      return false
+     end
+    end
 
     for element in self
       result = true if  yield element
@@ -58,11 +91,26 @@ module Enumerable
     result
   end
 
-  def my_none?
+  def my_none?(pattern = nil)
 
-    unless block_given?
+    unless block_given? || pattern 
       return true unless self.any? {|element| element == true}
       return false
+    end
+
+    if pattern
+     if pattern.is_a?(Regexp)
+      self.my_each  do |element| 
+        return false if element.match(pattern) 
+      end
+      return true
+
+     else
+      self.my_each do |element| 
+        return false if pattern === element
+      end
+      return true
+     end
     end
 
     for element in self
@@ -144,7 +192,3 @@ def multiply_els(arr)
   arr.my_inject(:*)
 end
 
-a = Proc.new {|x| x + 1}
-b = [1,2,3,4,5]
-p b.my_map(&a)
-p b.my_map{|x| x +1}
