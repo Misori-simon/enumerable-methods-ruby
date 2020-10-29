@@ -87,17 +87,17 @@ module Enumerable
     return counter
   end
 
-  def my_map
+  def my_map(&proc)
     return to_enum(:map) unless block_given?
 
     final_object = []
     for element in self
-      final_object << (yield element)
+      final_object << (proc.call(element))
     end
     final_object
   end
 
-  
+
 def my_inject(accumulator = nil, symbol = nil, &block)
 
   if accumulator.nil? && symbol.nil? && block.nil?
@@ -121,7 +121,7 @@ def my_inject(accumulator = nil, symbol = nil, &block)
     when nil
       block
   end
-  
+
   if accumulator.nil?
     ignore_first_element = true
     accumulator = array[0]
@@ -136,8 +136,15 @@ def my_inject(accumulator = nil, symbol = nil, &block)
     switch += 1
   end
   accumulator
-end  
-  
 end
 
+end
 
+def multiply_els(arr)
+  arr.my_inject(:*)
+end
+
+a = Proc.new {|x| x + 1}
+b = [1,2,3,4,5]
+p b.my_map(&a)
+p b.my_map{|x| x +1}
