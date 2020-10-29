@@ -89,7 +89,7 @@ module Enumerable
 
   def my_map
     return to_enum(:map) unless block_given?
-  
+
     final_object = []
     for element in self
       final_object << (yield element)
@@ -97,6 +97,33 @@ module Enumerable
     final_object
   end
 
-end
+  def my_inject(initial = nil , symbol = nil)
+    raise "LocalJumpError no block given?" unless block_given? || initial
+    if initial.is_a?(Symbol)
+      acc = self[0]
+      flag = true
+    else
+      acc = initial
+      flag = false
+    end
+    if initial
+      for element in self
+        if element == self[0] && flag
+          flag = false
+          next
+        end
+        acc = acc.send(initial, element)
+      end
+      return acc
+    end
+    for element in self
+      acc = yield acc, element
+    end
+    return acc
+  end
 
+end
+arr = [2,2,4,5,6]
+p arr.inject(1) {|sum, n| sum + n}
+p arr.my_inject(1) {|sum, n| sum + n}
 
