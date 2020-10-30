@@ -5,6 +5,8 @@
 # rubocop: disable Style/IdenticalConditionalBranches
 # rubocop: disable Style/CaseEquality
 # rubocop: disable Style/ExplicitBlockArgument
+# rubocop: disable Lint/MissingCopEnableDirective
+# rubocop: disable Lint/RedundantCopDisableDirective
 
 module Enumerable
   def my_each
@@ -142,7 +144,7 @@ module Enumerable
 
     final_object = []
     each do |element|
-      final_object << (proc.call(element))
+      final_object << proc.call(element)
     end
     final_object
   end
