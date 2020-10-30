@@ -5,15 +5,14 @@
 # rubocop: disable Metrics/PerceivedComplexity
 # rubocop: disable Style/IdenticalConditionalBranches
 # rubocop: disable Style/CaseEquality
-# rubocop: disable Style/ExplicitBlockArgument
 
 module Enumerable
-  def my_each
+  def my_each(&block)
     return to_enum(:my_each) unless block_given?
 
     array = to_a
     array.each do |element|
-      yield element
+      block.call(element)
     end
     self
   end
@@ -193,4 +192,3 @@ end
 # rubocop: enable Metrics/PerceivedComplexity
 # rubocop: enable Style/IdenticalConditionalBranches
 # rubocop: enable Style/CaseEquality
-# rubocop: enable Style/ExplicitBlockArgument
