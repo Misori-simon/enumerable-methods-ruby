@@ -140,10 +140,9 @@ module Enumerable
 
   def my_map(&proc)
     return to_enum(:map) unless block_given?
-
     final_object = []
     each do |element|
-      final_object << proc.call(element)
+      final_object << element if proc.call(element)
     end
     final_object
   end
@@ -193,3 +192,4 @@ end
 # rubocop: enable Metrics/PerceivedComplexity
 # rubocop: enable Style/IdenticalConditionalBranches
 # rubocop: enable Style/CaseEquality
+
