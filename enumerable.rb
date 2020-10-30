@@ -1,5 +1,4 @@
 # rubocop: disable Lint/RedundantCopDisableDirective
-# rubocop: disable Lint/MissingCopEnableDirective
 # rubocop: disable Metrics/ModuleLength
 # rubocop: disable Metrics/MethodLength
 # rubocop: disable Metrics/CyclomaticComplexity
@@ -7,8 +6,6 @@
 # rubocop: disable Style/IdenticalConditionalBranches
 # rubocop: disable Style/CaseEquality
 # rubocop: disable Style/ExplicitBlockArgument
-
-
 
 module Enumerable
   def my_each
@@ -189,4 +186,11 @@ def multiply_els(arr)
   arr.my_inject(:*)
 end
 
-# rubocop: enable all
+# rubocop: enable Lint/RedundantCopDisableDirective
+# rubocop: enable Metrics/ModuleLength
+# rubocop: enable Metrics/MethodLength
+# rubocop: enable Metrics/CyclomaticComplexity
+# rubocop: enable Metrics/PerceivedComplexity
+# rubocop: enable Style/IdenticalConditionalBranches
+# rubocop: enable Style/CaseEquality
+# rubocop: enable Style/ExplicitBlockArgument
