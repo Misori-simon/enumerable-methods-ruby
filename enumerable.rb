@@ -68,8 +68,9 @@ module Enumerable
   def my_any?(pattern = nil)
     unless block_given? || pattern
       my_each do |element|
-        return element ? true : false
+        return true if element
       end
+      return false
     end
 
     result = false
