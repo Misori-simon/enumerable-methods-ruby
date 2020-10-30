@@ -1,3 +1,5 @@
+# rubocop: disable Lint/RedundantCopDisableDirective
+# rubocop: disable Lint/MissingCopEnableDirective
 # rubocop: disable Metrics/ModuleLength
 # rubocop: disable Metrics/MethodLength
 # rubocop: disable Metrics/CyclomaticComplexity
@@ -5,8 +7,8 @@
 # rubocop: disable Style/IdenticalConditionalBranches
 # rubocop: disable Style/CaseEquality
 # rubocop: disable Style/ExplicitBlockArgument
-# rubocop: disable Lint/MissingCopEnableDirective
-# rubocop: disable Lint/RedundantCopDisableDirective
+
+
 
 module Enumerable
   def my_each
