@@ -124,7 +124,7 @@ module Enumerable
   end
 
   def my_count(arg = nil)
-    return length if !block_given? && arg.nil?
+    return size if !block_given? && arg.nil?
 
     counter = 0
     each do |element|
