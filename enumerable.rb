@@ -143,7 +143,7 @@ module Enumerable
 
     final_object = []
     each do |element|
-      final_object << element if proc.call(element)
+      final_object << proc.call(element)
     end
     final_object
   end
