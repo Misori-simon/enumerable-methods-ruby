@@ -11,7 +11,7 @@ module Enumerable
     return to_enum(:my_each) unless block_given?
 
     array = to_a
-    array.each do |element|
+    for element in array
       block.call(element)
     end
     self
@@ -34,7 +34,7 @@ module Enumerable
     array = to_a if instance_of?(Range)
     final_object = [] if array.instance_of?(Array)
     final_object = {} if array.instance_of?(Hash)
-    array.each do |element|
+    array.my_each do |element|
       if final_object.instance_of?(Array)
         final_object << element if yield element
       elsif yield element
@@ -90,7 +90,7 @@ module Enumerable
       end
     end
 
-    each do |element|
+    my_each do |element|
       result = true if yield element
     end
     result
@@ -118,7 +118,7 @@ module Enumerable
       end
     end
 
-    each do |element|
+    my_each do |element|
       return false if yield element
     end
     true
@@ -128,7 +128,7 @@ module Enumerable
     return size if !block_given? && arg.nil?
 
     counter = 0
-    each do |element|
+    my_each do |element|
       if arg
         counter += 1 if arg == element
       elsif yield element
@@ -138,13 +138,21 @@ module Enumerable
     counter
   end
 
-  def my_map(&proc)
+  def my_map(proc = nil)
     return to_enum(:map) unless block_given?
 
     final_object = []
-    each do |element|
+
+    if proc
+      my_each do |element|
       final_object << proc.call(element)
+      end
+    else
+      my_each do |element|
+        final_object << yield(element)
+      end
     end
+
     final_object
   end
 
@@ -174,7 +182,7 @@ module Enumerable
 
     switch = 0
 
-    each do |element|
+    my_each do |element|
       accumulator = code_to_run.call(accumulator, element) unless ignore_first_element && switch.zero?
       switch += 1
     end
