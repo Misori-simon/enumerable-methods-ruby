@@ -5,6 +5,7 @@
 # rubocop: disable Metrics/PerceivedComplexity
 # rubocop: disable Style/IdenticalConditionalBranches
 # rubocop: disable Style/CaseEquality
+# rubocop: disable Style/For
 
 module Enumerable
   def my_each(&block)
@@ -145,7 +146,7 @@ module Enumerable
 
     if proc
       my_each do |element|
-      final_object << proc.call(element)
+        final_object << proc.call(element)
       end
     else
       my_each do |element|
@@ -201,3 +202,4 @@ end
 # rubocop: enable Metrics/PerceivedComplexity
 # rubocop: enable Style/IdenticalConditionalBranches
 # rubocop: enable Style/CaseEquality
+# rubocop: enable Style/For
