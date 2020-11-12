@@ -39,4 +39,35 @@ describe Enumerable do
       expect(arr.my_each).to be_an_instance_of(Enumerator)
     end
   end
+
+  describe '#my_each_with_index' do
+    it 'iterates an array and yield item and index of item' do
+      my_each_hash = {}
+      each_hash = {}
+      arr.my_each_with_index { |item, index| my_each_hash[item] = index }
+      arr.each_with_index { |item, index| each_hash[item] = index }
+      expect(my_each_hash).to eql(each_hash)
+    end
+    it 'iterates a range and yield item and index of item' do
+      my_each_hash = {}
+      each_hash = {}
+      range.my_each_with_index { |item, index| my_each_hash[item] = index }
+      range.each_with_index { |item, index| each_hash[item] = index }
+      expect(my_each_hash).to eql(each_hash)
+    end
+    it 'iterates a hash and yield item and index of item' do
+      my_each_hash = {}
+      each_hash = {}
+      hash.my_each_with_index { |item, index| my_each_hash[item] = index }
+      hash.each_with_index { |item, index| each_hash[item] = index }
+      expect(my_each_hash).to eql(each_hash)
+    end
+    it 'returns the original object passsed to it ' do
+      expect(range.my_each_with_index { |x| }).to eql(range)
+    end
+    it 'returns the enumerable object when  no block is passed' do
+      expect(arr.my_each_with_index).to be_an_instance_of(Enumerator)
+    end
+  end
+
 end
