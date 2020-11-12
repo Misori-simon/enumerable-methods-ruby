@@ -70,4 +70,39 @@ describe Enumerable do
     end
   end
 
+  describe '#my_select' do
+    it 'iterates through an array and returns a new array of element matching the condition' do
+      expect(arr.my_select { |x| x > 2 }).to eql(arr.select { |x| x > 2 })
+    end
+    it 'iterates through a range and returns a new array of element matching the condition' do
+      expect(range.my_select { |x| x > 2 }).to eql(range.select { |x| x > 2 })
+    end
+    it 'returns the eneumerable object itself if no block passed' do
+      expect(arr.my_select).to be_an_instance_of(Enumerator)
+    end
+  end
+
+  describe '#my_all?' do
+    it 'returns true if all elements saitisfy condition' do
+      expect(arr.my_all? { |x| x > 0 }).to eql(arr.all? { |x| x > 0 })
+    end
+    it 'returns false if any elements cannot saitisfy condition' do
+      expect(arr.my_all? { |x| x > 3 }).to eql(arr.all? { |x| x > 3 })
+    end
+    it 'Accepts pattern without block' do
+      expect(arr.my_all?(Numeric)).to eql(arr.all?(Numeric))
+    end
+    it 'Returns true if Empty array passed without block' do
+      expect([].my_all?).to eql([].all?)
+    end
+    it 'Returns true if Range passed without block' do
+      expect(range.my_all?).to eql(range.all?)
+    end
+    it 'Returns true if all element matches Regex' do
+      expect(%w[act brace cat].my_all?(/c/)).to eql(%w[act brace cat].all?(/c/))
+    end
+    it 'Returns false if any element doesnot match Regex' do
+      expect(%w[ant bear cat].my_all?(/d/)).to eql(%w[ant bear cat].all?(/d/))
+    end
+  end
 end
