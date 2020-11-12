@@ -105,4 +105,60 @@ describe Enumerable do
       expect(%w[ant bear cat].my_all?(/d/)).to eql(%w[ant bear cat].all?(/d/))
     end
   end
+
+  describe '#my_any?' do
+    it 'returns false if no element saitisfy condition' do
+      expect(arr.my_any? { |x| x < 0 }).to eql(arr.any? { |x| x < 0 })
+    end
+    it 'returns true if any element  saitisfy condition' do
+      expect(arr.my_any? { |x| x > 2 }).to eql(arr.any? { |x| x > 2 })
+    end
+    it 'Accepts pattern as argument without block' do
+      expect(arr.my_any?(String)).to eql(arr.any?(String))
+    end
+    it 'Returns false if Empty array passed without block' do
+      expect([].my_any?).to eql([].any?)
+    end
+    it 'Returns true if Range passed without block' do
+      expect(range.my_any?).to eql(range.any?)
+    end
+    it 'Returns false if no element is true without block [fasle, false], [false, nil]' do
+      expect([false, nil].my_any?).to eql([false, nil].any?)
+    end
+    it 'Returns true if one element is true without block[fasle, true], [1, nil]' do
+      expect([false, 1].my_any?).to eql([false, 1].any?)
+    end
+    it 'Returns true if one element matches Regex' do
+      expect(%w[ant bear cat].my_any?(/c/)).to eql(%w[ant bear cat].any?(/c/))
+    end
+    it 'Returns false if no element matches Regex' do
+      expect(%w[ant bear cat].my_any?(/d/)).to eql(%w[ant bear cat].any?(/d/))
+    end
+  end
+
+  describe '#my_none' do
+    it 'returns true if no element matches the condition' do
+      expect(arr.my_none? { |x| x < 0 }).to eql(arr.none? { |x| x < 0 })
+    end
+    it 'returns false if any element matches the condition' do
+      expect(arr.my_none? { |x| x > 2 }).to eql(arr.none? { |x| x > 2 })
+    end
+    it 'Accepts Pattern as argument without block' do
+      expect(arr.my_none?(String)).to eql(arr.none?(String))
+    end
+    it 'Returns true if Empty array passed without block' do
+      expect([].my_none?).to eql([].none?)
+    end
+    it 'Returns false if no element is true without block [fasle, false], [false, nil]' do
+      expect([false, nil].my_none?).to eql([false, nil].none?)
+    end
+    it 'Returns false if one element matches Regex' do
+      expect(%w[ant bear cat].my_none?(/c/)).to eql(%w[ant bear cat].none?(/c/))
+    end
+    it 'Returns true if no element matches Regex' do
+      expect(%w[ant bear cat].my_none?(/d/)).to eql(%w[ant bear cat].none?(/d/))
+    end
+  end
+
+
 end
