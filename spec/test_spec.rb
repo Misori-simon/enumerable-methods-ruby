@@ -160,5 +160,49 @@ describe Enumerable do
     end
   end
 
+  describe '#my_count' do
+    it 'returns the size of object if no block given' do
+      expect(arr.my_count).to eql(arr.count)
+    end
+    it 'returns the number of occurence of argument if given' do
+      expect([2, 3, 4, 3].my_count(3)).to eql([2, 3, 4, 3].count(3))
+    end
+    it 'returns the number of elements that satisfy condition' do
+      arr_mix = [2.0, 3.4, 5.74, 3]
+      expect(arr_mix.my_count { |x| x.instance_of?(Float) }).to eql(arr_mix.count { |x| x.instance_of?(Float) })
+    end
+  end
 
+  describe '#my_map' do
+    it 'Returns new array of yielded elements if block given' do
+      expect(arr.my_map { |x| x * 2 }).to eql(arr.map { |x| x * 2 })
+    end
+    it '(special) Returns new array of yielded elements if block given' do
+      expect(arr.my_map { 'joker' }).to eql(arr.map { 'joker' })
+    end
+    it 'Returns new array of yielded elements if proc passed' do
+      expect(arr.my_map(&test_proc)).to eql(arr.map(&test_proc))
+    end
+  end
+
+  describe '#my_inject' do
+    it 'returns accumulator when block is passed' do
+      expect(arr.my_inject { |acc, item| acc + item }).to eql(arr.inject { |acc, item| acc + item })
+    end
+    it '(RANGES) returns accumulator when block is passed' do
+      expect(range.my_inject { |acc, item| acc + item }).to eql(range.inject { |acc, item| acc + item })
+    end
+    it 'returns accumulator when symbol is passed' do
+      expect(arr.my_inject(:+)).to eql(arr.inject(:+))
+    end
+    it 'Accepts a proc and returns final yield' do
+      expect(%w[cat sheep bear].my_inject(&sort_proc)).to eql(%w[cat sheep bear].inject(&sort_proc))
+    end
+    it 'Throws an error (NoMethodError) if both argument and block are given' do
+      expect { arr.my_inject(:+) { |acc, item| acc + item } }.to raise_error(NoMethodError)
+    end
+    it 'Throws an error (LocalJumpError) if  both argument and block are NOT given' do
+      expect { arr.my_inject }.to raise_error(LocalJumpError)
+    end
+  end
 end
